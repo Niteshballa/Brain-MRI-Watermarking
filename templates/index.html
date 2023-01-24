@@ -1,0 +1,168 @@
+<head>
+    <style>
+      /* Add a background color to the entire body */
+      body {
+        background-color: #e6e6e6;
+      }
+  
+      .upload-div {
+  /* Add some padding and margin */
+  padding: 20px;
+  margin: 20px;
+  /* Add some background color */
+  background-color: #f9f9f9;
+  /* Add some box-shadow */
+  box-shadow: 0px 0px 10px #ccc;
+  /* Add some text alignment */
+  text-align: center;
+}
+
+.output-div {
+  /* Add some padding and margin */
+  padding: 20px;
+  margin: 20px;
+  /* Add some border */
+  border: 1px solid #ccc;
+  /* Add some hover effect */
+  transition: all 0.3s ease-in-out;
+  /* Add some background color */
+  background-color: #f9f9f9;
+  /* Add some box-shadow */
+  box-shadow: 0px 0px 10px #ccc;
+  /* Add some text alignment */
+  text-align: center;
+}
+
+.output-div:hover {
+  /* Change the border color on hover */
+  border-color: #333;
+  /* Add some scale effect on hover */
+  transform: scale(1.1);
+}
+  
+      /* Style the input field and button */
+      .upload-div input[type="file"] {
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        margin-bottom: 10px;
+      }
+      .upload-div input[type="submit"] {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+  
+      /* Style the output divs */
+      .output-div {
+        background-color: #f2f2f2;
+        padding: 20px;
+        text-align: center;
+        display: inline-block;
+        border: 1px solid #ccc;
+        width:400px;
+        height:400px;
+        /* Add a border radius to the div */
+        border-radius: 10px;
+        /* Add a box shadow to the div */
+        box-shadow: 0px 0px 10px 0px grey;
+        /* Add some margin to the div */
+        margin: 20px;
+        }
+
+    /* Style the output images */
+        .output-div img {
+          width:100%;
+          height:100%;
+          object-fit: contain;
+        }
+    
+    .heading {
+        background: linear-gradient(to right, #1e3c72, #2a5298);
+        /* Add some padding and margin */
+        padding: 20px;
+        margin: 20px;
+        /* Add some border radius */
+        border-radius: 10px;
+        /* Add some text styling */
+        text-align: center;
+        color: white;
+        }
+
+    .heading h1 {
+      /* Style the text */
+      font-size: 36px;
+      font-weight: bold;
+    }
+.output-div-container {
+  /* Set the display property to grid */
+  display: grid;
+  /* Specify the number of columns and rows in the grid */
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+}
+
+figcaption {
+  /* Add some text styling */
+  font-size: 30px;
+  color: #333;
+  text-align: center;
+}
+
+    </style>
+</head>
+  <body>
+    <div class="heading">
+        <h1>Medical Image Watermarking</h1>
+      </div>
+    <div class="upload-div">
+      <form method="POST" enctype="multipart/form-data">
+        <input type="file" name="file">
+        <input type="submit" value="Upload">
+      </form>
+    </div>
+    <div class="output-div-container">
+        <div class="output-div">
+          <figure>
+            <img src="{{ output_url_1 }}" alt="Output 1">
+            <figcaption>Region of Intersection</figcaption>
+          </figure>
+        </div>
+        <div class="output-div">
+          <figure>
+            <img src="{{ output_url_2 }}" alt="Output 2">
+            <figcaption>Non-Region of Intersection</figcaption>
+          </figure>
+        </div>
+        <div class="output-div">
+          <figure>
+          <img src="{{ output_url_3 }}" alt="Output 3">
+          <figcaption>Hash Watermaked Image</figcaption>
+          </figure>
+        </div>
+        <div class="output-div">
+          <figure>
+          <img src="{{ output_url_4 }}" alt="Output 4">
+          <figcaption>Iwt applied ROI</figcaption>
+          </figure>
+        </div>
+        <div class="output-div">
+          <figure>
+          <img src="{{ output_url_5 }}" alt="Output 6">
+          <figcaption>Watermak Embedded image</figcaption>
+          </figure>
+        </div>
+        <div class="output-div">
+          <figure>
+          <img src="{{ output_url_6 }}" alt="Output 6">
+          <figcaption>Final Extracted ROI</figcaption>
+          </figure>
+        </div>
+    </div>
+      
+      
+  </body>
+  
