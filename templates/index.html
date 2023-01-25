@@ -31,16 +31,15 @@ body {
   padding: 1rem;
 }
 
-.upload-div {
-  text-align: center;
-  margin-top: 2rem;
-}
 .hidden {
     display: none;
 }
 
 
 .output-div-container {
+    width: 80%; /* adjust as needed */
+    height: 600px; /* adjust as needed */
+    margin: 0 auto;
     display: grid; /* Enable grid layout */
     text-align: center;
     grid-template-columns: repeat(3, 1fr); /* Create 3 columns with equal width */
@@ -52,7 +51,13 @@ body {
 .output-div {
     padding: 0; /* Remove padding */
     margin: 0; /* Remove margin */
+    height: auto;
+    width:auto;
     margin-bottom: 0.5rem; /* Add margin-bottom for spacing between images */
+ /* this will hide any text that overflows the div */
+    text-align: center;
+    margin-top: 2rem;
+    word-break:break-all;
 }
 
 figure {
@@ -66,8 +71,9 @@ figure {
 }
 
 figure img {
-  width: 80%;
-  height: 500px;
+  margin-top:10px;
+  width: 300px;
+  height: 300px;
   object-fit: contain;
 }
 
@@ -110,28 +116,29 @@ figure figcaption {
           <figure>
             <button id ="button1">toggle</button>
             <img id = "img1" src="{{ output_url_1 }}" alt="Output 1">
-            <figcaption>Region of Interest</figcaption>
+            <figcaption>Uploaded Image</figcaption>
           </figure>
         </div>
         <div class="output-div">
           <figure>
             <button id ="button2">toggle</button>
             <img id = "img2" src="{{ output_url_2 }}" alt="Output 2">
-            <figcaption>Region of Non Interest</figcaption>
+            <figcaption>Region of Interest</figcaption>
           </figure>
         </div>
         <div class="output-div">
           <figure>
           <button id ="button3">toggle</button>
           <img id = "img3" src="{{ output_url_3 }}" alt="Output 3">
-          <figcaption>Hash Watermaked Image</figcaption>
+          <figcaption>Region of Non Interest</figcaption>
           </figure>
         </div>
         <div class="output-div">
           <figure>
           <button id ="button4">toggle</button>
           <img id = "img4" src="{{ output_url_4 }}" alt="Output 4">
-          <figcaption>Iwt applied ROI</figcaption>
+          <p id = "hash1">{{output_text_hashed}}</p>
+          <figcaption>Hashed ROI</figcaption>
           </figure>
         </div>
         <div class="output-div">
@@ -145,7 +152,8 @@ figure figcaption {
           <figure>
           <button id ="button6">toggle</button>
           <img id = "img6" src="{{ output_url_6 }}" alt="Output 6">
-          <figcaption>Final Extracted ROI</figcaption>
+          <p id = "hash1">{{extracted_hash}}</p>
+          <figcaption>Extracted ROI</figcaption>
           </figure>
         </div>
     </div>
@@ -157,7 +165,11 @@ figure figcaption {
     // Get the button and image elements
     var buttons = document.querySelectorAll("button");
 var images = document.querySelectorAll("img");
+var ps = document.querySelectorAll("p")
 
+ps.forEach(function(p){
+  p.classList.add("hidden");
+});
 
 images.forEach(function(image) {
     image.classList.add("hidden");
@@ -165,9 +177,12 @@ images.forEach(function(image) {
 
 buttons.forEach(function(button, index) {
     button.addEventListener("click", function() {
+        if(index==3)
+          ps[0].classList.toggle("hidden");
+        if(index==5)
+          ps[1].classList.toggle("hidden");
         images[index].classList.toggle("hidden");
     });
 });
-
 
   </script>

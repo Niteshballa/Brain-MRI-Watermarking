@@ -42,6 +42,8 @@ def index():
             nroi = genNroi(img,roi)
             ROI_watermark_text = hashlib.sha256(roi).hexdigest()
             print(ROI_watermark_text)
+            roi_img = genRoi(img,roi)
+            hashed_roi = watermark (ROI_watermark_text, roi_img)
             encoded_img = watermark (ROI_watermark_text, img)
             NROI_gray = color.rgb2gray(nroi)
             img_gray = color.rgb2gray(img)
@@ -49,10 +51,10 @@ def index():
             model = 'haar'
             level = 1
             image_array, mainImg = convert_image(os.path.join(app.config['UPLOAD_FOLDER'], filename), 2048)
-            s,d = iwt(roi.flatten())
-            s = np.reshape(s,(512,256))
-            plt.imsave(os.path.join(app.config['OUTPUT_FOLDER'], 'iwtRoi.jpg'),s, cmap="gray")
-            watermark_array, mark = convert_image(os.path.join(app.config['OUTPUT_FOLDER'], 'iwtRoi.jpg'), 128)
+            s,d = iwt(hashed_roi.flatten())
+            s = np.reshape(s,(512,256,3))
+            cv.imwrite(os.path.join(app.config['OUTPUT_FOLDER'], 'iwtRoi.jpg'),s)
+            watermark_array, mark = convert_image(os.path.join(app.config['OUTPUT_FOLDER'], 'hashed_roi.jpg'), 128)
             coeffs_image = process_coefficients(image_array, model, level=level)
             dct_array = apply_dct(coeffs_image[0])
             dct_array = embed_watermark(watermark_array, dct_array)
@@ -68,13 +70,15 @@ def index():
             iwt_recovered_array = np.asarray(recovered_iwt)
             res = iiwt(iwt_recovered_array.flatten(),d)
             res = np.reshape(res,(512,512))
-
+            extracted_hash = decodeText(ROI_watermark_text,hashed_roi)
             # output_img_4 = process_image_4(img)
             # output_img_5 = process_image_5(img)
             # output_img_6 = process_image_6(img)
 
             # Save output images
-            cv.imwrite(os.path.join(app.config['OUTPUT_FOLDER'], 'roi.jpg'), roi)
+            cv.imwrite(os.path.join(app.config['OUTPUT_FOLDER'], 'uploaded.jpg'),img)
+            cv.imwrite(os.path.join(app.config['OUTPUT_FOLDER'], 'roi.jpg'), roi_img)
+            cv.imwrite(os.path.join(app.config['OUTPUT_FOLDER'], 'hashed_roi.jpg'), hashed_roi)
             cv.imwrite(os.path.join(app.config['OUTPUT_FOLDER'], 'nroi.jpg'), nroi)
             cv.imwrite(os.path.join(app.config['OUTPUT_FOLDER'], 'watermarkHashed.jpg'), encoded_img)
             plt.imsave(os.path.join(app.config['OUTPUT_FOLDER'], 'iwtWatermarked.jpg'),watermarked_img, cmap = "gray")
@@ -82,14 +86,17 @@ def index():
             
             
              # URLs for output images
+            img = url_for('static',filename= 'outputs/uploaded.jpg')
             roi = url_for('static', filename='outputs/roi.jpg')
+            hashed_roi = url_for('static', filename = 'outputs/hashed_roi.jpg')
+            hashed_text= ROI_watermark_text
             nroi = url_for('static', filename='outputs/nroi.jpg')
             encoded_img = url_for('static', filename='outputs/watermarkHashed.jpg')
             iwtRoiUrl = url_for('static', filename='outputs/iwtRoi.jpg')
             iwtWatermarked = url_for('static', filename='outputs/iwtWatermarked.jpg')
             iwtRecovered = url_for('static', filename='outputs/iwtRecovered.jpg')
 
-            return render_template('index.html', output_url_1=roi, output_url_2=nroi, output_url_3=encoded_img, output_url_4 = iwtRoiUrl, output_url_5 = iwtWatermarked, output_url_6 = iwtRecovered)
+            return render_template('index.html', output_url_1=img, output_url_2=roi , output_url_3=nroi, output_text_hashed = hashed_text, output_url_4 = hashed_roi, output_url_5 = iwtWatermarked, output_url_6 = iwtRecovered, extracted_hash = extracted_hash)
 
     return render_template('index.html')
 
@@ -114,11 +121,21 @@ def genNroi(img,roi):
     NROI[roi.squeeze()!=0] = 0
     return NROI
 
+def genRoi(img,roi):
+    NROI = img.copy()
+    NROI[roi.squeeze()==0] = 0
+    return NROI
+
 def watermark(ROI_watermark_text, img):
     encoder = WatermarkEncoder()
     encoder.set_watermark('bytes', ROI_watermark_text.encode('utf-8'))
     bgr_encoded = encoder.encode(img, 'dwtDct')
     return bgr_encoded
+
+def decodeText(ROI_watermark_text,bgr_encoded):
+    decoder = WatermarkDecoder('bytes',len(ROI_watermark_text)*8)
+    watermark = decoder.decode(bgr_encoded, 'dwtDct')
+    return watermark.decode('utf-8')
 
 def convert_image(image_name, size):
     img = Image.open(image_name).resize((size, size), 1)
