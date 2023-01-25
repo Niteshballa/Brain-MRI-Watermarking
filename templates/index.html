@@ -1,115 +1,96 @@
 <head>
     <style>
-      /* Add a background color to the entire body */
-      body {
-        background-color: #e6e6e6;
-      }
-  
-      .upload-div {
-  /* Add some padding and margin */
-  padding: 20px;
-  margin: 20px;
-  /* Add some background color */
-  background-color: #f9f9f9;
-  /* Add some box-shadow */
-  box-shadow: 0px 0px 10px #ccc;
-  /* Add some text alignment */
-  text-align: center;
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
 }
+
+.heading {
+  text-align: center;
+  background-color: #4CAF50;
+  color: white;
+  padding: 1rem;
+}
+
+.upload-div {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.heading {
+  text-align: center;
+  background-color: #4CAF50;
+  color: white;
+  padding: 1rem;
+}
+
+.upload-div {
+  text-align: center;
+  margin-top: 2rem;
+}
+.hidden {
+    display: none;
+}
+
+
+.output-div-container {
+    display: grid; /* Enable grid layout */
+    text-align: center;
+    grid-template-columns: repeat(3, 1fr); /* Create 3 columns with equal width */
+    grid-column-gap: 1rem; /* Add horizontal spacing between columns */
+    grid-row-gap: 1rem; /* Add vertical spacing between rows */
+}
+
 
 .output-div {
-  /* Add some padding and margin */
-  padding: 20px;
-  margin: 20px;
-  /* Add some border */
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margin */
+    margin-bottom: 0.5rem; /* Add margin-bottom for spacing between images */
+}
+
+figure {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  margin: 1rem;
+  padding: 1rem;
   border: 1px solid #ccc;
-  /* Add some hover effect */
-  transition: all 0.3s ease-in-out;
-  /* Add some background color */
-  background-color: #f9f9f9;
-  /* Add some box-shadow */
-  box-shadow: 0px 0px 10px #ccc;
-  /* Add some text alignment */
-  text-align: center;
+  border-radius: 5px;
 }
 
-.output-div:hover {
-  /* Change the border color on hover */
-  border-color: #333;
-  /* Add some scale effect on hover */
-  transform: scale(1.1);
-}
-  
-      /* Style the input field and button */
-      .upload-div input[type="file"] {
-        padding: 10px;
-        border-radius: 5px;
-        border: none;
-        margin-bottom: 10px;
-      }
-      .upload-div input[type="submit"] {
-        background-color: #4CAF50;
-        color: white;
-        padding: 10px 20px;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-      }
-  
-      /* Style the output divs */
-      .output-div {
-        background-color: #f2f2f2;
-        padding: 20px;
-        text-align: center;
-        display: inline-block;
-        border: 1px solid #ccc;
-        width:400px;
-        height:400px;
-        /* Add a border radius to the div */
-        border-radius: 10px;
-        /* Add a box shadow to the div */
-        box-shadow: 0px 0px 10px 0px grey;
-        /* Add some margin to the div */
-        margin: 20px;
-        }
-
-    /* Style the output images */
-        .output-div img {
-          width:100%;
-          height:100%;
-          object-fit: contain;
-        }
-    
-    .heading {
-        background: linear-gradient(to right, #1e3c72, #2a5298);
-        /* Add some padding and margin */
-        padding: 20px;
-        margin: 20px;
-        /* Add some border radius */
-        border-radius: 10px;
-        /* Add some text styling */
-        text-align: center;
-        color: white;
-        }
-
-    .heading h1 {
-      /* Style the text */
-      font-size: 36px;
-      font-weight: bold;
-    }
-.output-div-container {
-  /* Set the display property to grid */
-  display: grid;
-  /* Specify the number of columns and rows in the grid */
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+figure img {
+  width: 80%;
+  height: 500px;
+  object-fit: contain;
 }
 
-figcaption {
-  /* Add some text styling */
-  font-size: 30px;
-  color: #333;
-  text-align: center;
+figure button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 12px 20px; /* Padding for the button */
+    border: none; /* Remove border */
+    border-radius: 4px; /* Rounded corners */
+    cursor: pointer; /* Change cursor to hand pointer */
+    text-align: center; /* Center the text */
+    display: block; /* Make the button take up the full width of its parent */
+    margin: 0 auto; /* Center the button horizontally */
+    margin-top: 1rem;
+}
+
+figure figcaption {
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    color: #333;
+    margin-top: 0.5rem;
 }
 
     </style>
@@ -127,37 +108,43 @@ figcaption {
     <div class="output-div-container">
         <div class="output-div">
           <figure>
-            <img src="{{ output_url_1 }}" alt="Output 1">
-            <figcaption>Region of Intersection</figcaption>
+            <button id ="button1">toggle</button>
+            <img id = "img1" src="{{ output_url_1 }}" alt="Output 1">
+            <figcaption>Region of Interest</figcaption>
           </figure>
         </div>
         <div class="output-div">
           <figure>
-            <img src="{{ output_url_2 }}" alt="Output 2">
-            <figcaption>Non-Region of Intersection</figcaption>
+            <button id ="button2">toggle</button>
+            <img id = "img2" src="{{ output_url_2 }}" alt="Output 2">
+            <figcaption>Region of Non Interest</figcaption>
           </figure>
         </div>
         <div class="output-div">
           <figure>
-          <img src="{{ output_url_3 }}" alt="Output 3">
+          <button id ="button3">toggle</button>
+          <img id = "img3" src="{{ output_url_3 }}" alt="Output 3">
           <figcaption>Hash Watermaked Image</figcaption>
           </figure>
         </div>
         <div class="output-div">
           <figure>
-          <img src="{{ output_url_4 }}" alt="Output 4">
+          <button id ="button4">toggle</button>
+          <img id = "img4" src="{{ output_url_4 }}" alt="Output 4">
           <figcaption>Iwt applied ROI</figcaption>
           </figure>
         </div>
         <div class="output-div">
           <figure>
-          <img src="{{ output_url_5 }}" alt="Output 6">
+          <button id ="button5">toggle</button>
+          <img id = "img5" src="{{ output_url_5 }}" alt="Output 6">
           <figcaption>Watermak Embedded image</figcaption>
           </figure>
         </div>
         <div class="output-div">
           <figure>
-          <img src="{{ output_url_6 }}" alt="Output 6">
+          <button id ="button6">toggle</button>
+          <img id = "img6" src="{{ output_url_6 }}" alt="Output 6">
           <figcaption>Final Extracted ROI</figcaption>
           </figure>
         </div>
@@ -166,3 +153,21 @@ figcaption {
       
   </body>
   
+  <script>
+    // Get the button and image elements
+    var buttons = document.querySelectorAll("button");
+var images = document.querySelectorAll("img");
+
+
+images.forEach(function(image) {
+    image.classList.add("hidden");
+});
+
+buttons.forEach(function(button, index) {
+    button.addEventListener("click", function() {
+        images[index].classList.toggle("hidden");
+    });
+});
+
+
+  </script>

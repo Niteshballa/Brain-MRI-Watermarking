@@ -123,7 +123,6 @@ def watermark(ROI_watermark_text, img):
 def convert_image(image_name, size):
     img = Image.open(image_name).resize((size, size), 1)
     img = img.convert('L')
-    img.show()
     image_array = np.array(img.getdata(), dtype=float).reshape((size, size))
     return (image_array, img)
 
@@ -249,3 +248,8 @@ def iiwt(s,d):
     c2 = np.column_stack((s,d)).ravel()
 
     return c2
+
+def imageOutput1():
+    img = cv.imread(os.path.join(app.config['UPLOAD_FOLDER'], ))
+    dim=(512,512)
+    img = cv.resize(img, dim)
