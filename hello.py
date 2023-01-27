@@ -25,12 +25,14 @@ app = Flask(__name__)
 
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['OUTPUT_FOLDER'] = 'static/outputs'
+ROI_watermark_text = ""
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
         file = request.files['file']
         if file and allowed_file(file.filename):
+            global ROI_watermark_text
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             img = cv.imread(os.path.join(app.config['UPLOAD_FOLDER'], filename))
@@ -99,6 +101,22 @@ def index():
             return render_template('index.html', output_url_1=img, output_url_2=roi , output_url_3=nroi, output_text_hashed = hashed_text, output_url_4 = hashed_roi, output_url_5 = iwtWatermarked, output_url_6 = iwtRecovered, extracted_hash = extracted_hash)
 
     return render_template('index.html')
+
+@app.route('/auth')
+def new_page():
+    global ROI_watermark_text
+    roi = cv.imread(os.path.join(app.config['OUTPUT_FOLDER'], "uploaded.jpg"))
+    roi = fetchRoi(roi)
+    tampered_roi = cv.bilateralFilter(roi,1,1,3)  
+    hash_tampered_roi = hashlib.sha256(tampered_roi).hexdigest()
+
+    cv.imwrite(os.path.join(app.config['OUTPUT_FOLDER'], 'original_roi.jpg'),roi)
+    cv.imwrite(os.path.join(app.config['OUTPUT_FOLDER'], 'tampered_roi.jpg'),tampered_roi)
+
+
+    tmp_roi_url = url_for('static',filename= 'outputs/tampered_roi.jpg')
+    org_roi_url = url_for('static', filename = 'outputs/original_roi.jpg')
+    return render_template('auth.html', output_url_1=org_roi_url, hash = ROI_watermark_text,output_url_2=tmp_roi_url, hash_tmp = hash_tampered_roi)
 
 def allowed_file(filename):
     return '.' in filename and \

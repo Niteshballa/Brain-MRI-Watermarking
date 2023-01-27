@@ -127,56 +127,26 @@ figure figcaption {
       </form>
     </div>
     <div class="output-div-container">
-        <div class="output-div">
-          <figure>
-            <button id ="button1">toggle</button>
-            <img id = "img1" src="{{ output_url_1 }}" alt="Output 1">
-            <figcaption>Uploaded Image</figcaption>
-          </figure>
-        </div>
-        <div class="output-div">
-          <figure>
-            <button id ="button2">toggle</button>
-            <img id = "img2" src="{{ output_url_2 }}" alt="Output 2">
-            <figcaption>Region of Interest</figcaption>
-          </figure>
-        </div>
-        <div class="output-div">
-          <figure>
-          <button id ="button3">toggle</button>
-          <img id = "img3" src="{{ output_url_3 }}" alt="Output 3">
-          <figcaption>Region of Non Interest</figcaption>
-          </figure>
-        </div>
+        
         <div class="output-div">
           <figure>
           <button id ="button4">toggle</button>
-          <img id = "img4" src="{{ output_url_4 }}" alt="Output 4">
-          <p id = "hash1">{{output_text_hashed}}</p>
+          <img id = "img4" src="{{ output_url_1 }}" alt="Output 4">
+          <p>{{hash}}</p>
           <figcaption>Hashed ROI</figcaption>
           </figure>
         </div>
-        <div class="output-div">
-          <figure>
-          <button id ="button5">toggle</button>
-          <img id = "img5" src="{{ output_url_5 }}" alt="Output 6">
-          <figcaption>Watermak Embedded image</figcaption>
-          </figure>
-        </div>
+        
         <div class="output-div">
           <figure>
           <button id ="button6">toggle</button>
-          <img id = "img6" src="{{ output_url_6 }}" alt="Output 6">
-          <p id = "hash1">{{extracted_hash}}</p>
+          <img id = "img6" src="{{ output_url_2 }}" alt="Output 6">
+          <p>{{hash_tmp}}</p>
           <figcaption>Extracted ROI</figcaption>
           </figure>
         </div>
     </div>
       
-    <div class="bottom-right-button" onclick="openNewPage()">
-      Verify Authenticity
-    </div>
-    
   </body>
   
   <script>
@@ -195,15 +165,9 @@ images.forEach(function(image) {
 
 buttons.forEach(function(button, index) {
     button.addEventListener("click", function() {
-        if(index==3)
-          ps[0].classList.toggle("hidden");
-        if(index==5)
-          ps[1].classList.toggle("hidden");
+        ps[index].classList.toggle("hidden");
         images[index].classList.toggle("hidden");
     });
 });
 
-function openNewPage() {
-    window.location.href = '/auth';
-  }
   </script>
