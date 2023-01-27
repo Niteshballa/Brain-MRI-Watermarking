@@ -34,7 +34,7 @@ body {
 .hidden {
     display: none;
 }
-.bottom-right-button {
+.back-button {
   background-color: #4CAF50;
   color: white;
   border: none;
@@ -129,6 +129,13 @@ figure figcaption {
     <div class="output-div-container">
         
         <div class="output-div">
+            <figure>
+            <button id ="button4">toggle</button>
+            <img id = "img4" src="{{ output_url_3 }}" alt="Output 4">
+            <figcaption>Watermark Embedded Image</figcaption>
+            </figure>
+          </div>
+        <div class="output-div">
           <figure>
           <button id ="button4">toggle</button>
           <img id = "img4" src="{{ output_url_1 }}" alt="Output 4">
@@ -146,6 +153,9 @@ figure figcaption {
           </figure>
         </div>
     </div>
+    <div class="back-button">
+        <a href="javascript:history.back()">Go Back</a>
+      </div>
       
   </body>
   
@@ -169,5 +179,6 @@ buttons.forEach(function(button, index) {
         images[index].classList.toggle("hidden");
     });
 });
+
 
   </script>
