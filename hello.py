@@ -110,13 +110,14 @@ def new_page():
     tampered_roi = cv.bilateralFilter(roi,1,1,3)  
     hash_tampered_roi = hashlib.sha256(tampered_roi).hexdigest()
 
+    
     cv.imwrite(os.path.join(app.config['OUTPUT_FOLDER'], 'original_roi.jpg'),roi)
     cv.imwrite(os.path.join(app.config['OUTPUT_FOLDER'], 'tampered_roi.jpg'),tampered_roi)
 
-
+    watermark = url_for('static',filename = 'outputs/iwtWatermarked.jpg')
     tmp_roi_url = url_for('static',filename= 'outputs/tampered_roi.jpg')
     org_roi_url = url_for('static', filename = 'outputs/original_roi.jpg')
-    return render_template('auth.html', output_url_1=org_roi_url, hash = ROI_watermark_text,output_url_2=tmp_roi_url, hash_tmp = hash_tampered_roi)
+    return render_template('auth.html', output_url_1=org_roi_url, hash = ROI_watermark_text,output_url_2=tmp_roi_url, hash_tmp = hash_tampered_roi, output_url_3 = watermark)
 
 def allowed_file(filename):
     return '.' in filename and \
