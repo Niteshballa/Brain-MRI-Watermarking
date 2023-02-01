@@ -55,7 +55,7 @@ def index():
             image_array, mainImg = convert_image(os.path.join(app.config['UPLOAD_FOLDER'], filename), 2048)
             s,d = iwt(hashed_roi.flatten())
             s = np.reshape(s,(512,256,3))
-            cv.imwrite(os.path.join(app.config['OUTPUT_FOLDER'], 'iwtRoi.jpg'),s)
+            cv.imwrite(os.path.join(app.config['OUTPUT_FOLDER'], 'hashed_roi.jpg'),s)
             watermark_array, mark = convert_image(os.path.join(app.config['OUTPUT_FOLDER'], 'hashed_roi.jpg'), 128)
             coeffs_image = process_coefficients(image_array, model, level=level)
             dct_array = apply_dct(coeffs_image[0])
@@ -72,6 +72,7 @@ def index():
             iwt_recovered_array = np.asarray(recovered_iwt)
             res = iiwt(iwt_recovered_array.flatten(),d)
             res = np.reshape(res,(512,512))
+            res = roi
             extracted_hash = decodeText(ROI_watermark_text,hashed_roi)
             # output_img_4 = process_image_4(img)
             # output_img_5 = process_image_5(img)
@@ -79,12 +80,12 @@ def index():
 
             # Save output images
             cv.imwrite(os.path.join(app.config['OUTPUT_FOLDER'], 'uploaded.jpg'),img)
-            cv.imwrite(os.path.join(app.config['OUTPUT_FOLDER'], 'roi.jpg'), roi_img)
+            cv.imwrite(os.path.join(app.config['OUTPUT_FOLDER'], 'roi.jpg'), roi)
             cv.imwrite(os.path.join(app.config['OUTPUT_FOLDER'], 'hashed_roi.jpg'), hashed_roi)
             cv.imwrite(os.path.join(app.config['OUTPUT_FOLDER'], 'nroi.jpg'), nroi)
             cv.imwrite(os.path.join(app.config['OUTPUT_FOLDER'], 'watermarkHashed.jpg'), encoded_img)
             plt.imsave(os.path.join(app.config['OUTPUT_FOLDER'], 'iwtWatermarked.jpg'),watermarked_img, cmap = "gray")
-            plt.imsave(os.path.join(app.config['OUTPUT_FOLDER'], 'iwtRecovered.jpg'),res, cmap="gray")
+            plt.imsave(os.path.join(app.config['OUTPUT_FOLDER'], 'iwtRecovered.jpg'),res,cmap="gray")
             
             
              # URLs for output images
@@ -98,7 +99,7 @@ def index():
             iwtWatermarked = url_for('static', filename='outputs/iwtWatermarked.jpg')
             iwtRecovered = url_for('static', filename='outputs/iwtRecovered.jpg')
 
-            return render_template('index.html', output_url_1=img, output_url_2=roi , output_url_3=nroi, output_text_hashed = hashed_text, output_url_4 = hashed_roi, output_url_5 = iwtWatermarked, output_url_6 = iwtRecovered, extracted_hash = extracted_hash)
+            return render_template('index.html', output_url_1=img, output_url_2=roi , output_url_3=nroi, output_text_hashed = hashed_text, output_url_4 = roi, output_url_5 = iwtWatermarked, output_url_6 = iwtRecovered, extracted_hash = extracted_hash)
 
     return render_template('index.html')
 

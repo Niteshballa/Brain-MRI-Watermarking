@@ -1,4 +1,6 @@
 <head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+
     <style>
 body {
   font-family: Arial, sans-serif;
@@ -120,16 +122,16 @@ figure figcaption {
     <div class="heading">
         <h1>Medical Image Watermarking</h1>
       </div>
-    <div class="upload-div">
-      <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="file">
-        <input type="submit" value="Upload">
-      </form>
-    </div>
+    <div class="upload-div" style="display:none;">
+  <form method="POST" enctype="multipart/form-data">
+    <input type="file" name="file" id="fileInput">
+    <input type="submit" value="Upload">
+  </form>
+</div>
     <div class="output-div-container">
         <div class="output-div">
           <figure>
-            <button id ="button1">toggle</button>
+            <button id="submitButton">Browse</button>
             <img id = "img1" src="{{ output_url_1 }}" alt="Output 1">
             <figcaption>Uploaded Image</figcaption>
           </figure>
@@ -143,17 +145,17 @@ figure figcaption {
         </div>
         <div class="output-div">
           <figure>
-          <button id ="button3">toggle</button>
-          <img id = "img3" src="{{ output_url_3 }}" alt="Output 3">
-          <figcaption>Region of Non Interest</figcaption>
-          </figure>
-        </div>
-        <div class="output-div">
-          <figure>
           <button id ="button4">toggle</button>
           <img id = "img4" src="{{ output_url_4 }}" alt="Output 4">
           <p id = "hash1">{{output_text_hashed}}</p>
           <figcaption>Hashed ROI</figcaption>
+          </figure>
+        </div>
+        <div class="output-div">
+          <figure>
+          <button id ="button3">toggle</button>
+          <img id = "img3" src="{{ output_url_3 }}" alt="Output 3">
+          <figcaption>Region of Non Interest</figcaption>
           </figure>
         </div>
         <div class="output-div">
@@ -193,17 +195,34 @@ images.forEach(function(image) {
     image.classList.add("hidden");
 });
 
+images[0].classList.toggle("hidden");
 buttons.forEach(function(button, index) {
+  if(index>0){
     button.addEventListener("click", function() {
-        if(index==3)
+        if(index==2)
           ps[0].classList.toggle("hidden");
         if(index==5)
           ps[1].classList.toggle("hidden");
         images[index].classList.toggle("hidden");
     });
+  }
 });
 
 function openNewPage() {
     window.location.href = '/auth';
   }
+
+  let submitClicked = false;
+  
+  $("#submitButton").click(function() {
+    if (!submitClicked) {
+      $("#fileInput").trigger("click");
+      $("#submitButton").text("Submit");
+    } else {
+      $(".upload-div form").submit();
+      $("#submitButton").text("Browse");
+    }
+    submitClicked = !submitClicked;
+  });
+
   </script>
